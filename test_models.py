@@ -48,12 +48,13 @@ if device == 'cuda':
     cudnn.benchmark = True
 
 # Load checkpoint.
-print('==> Resuming from checkpoint..')
+ckpt_path = f'./checkpoint/{args.net}.pth'
+print(f'==> Resuming from checkpoint.. {ckpt_path}')
 assert os.path.isdir('checkpoint'), 'Error: no checkpoint directory found!'
-checkpoint = torch.load(f'./checkpoint/{args.net}.pth')
+checkpoint = torch.load(ckpt_path)
 net.load_state_dict(checkpoint['net'])
 best_acc = checkpoint['acc']
 start_epoch = checkpoint['epoch']
 
 criterion = nn.CrossEntropyLoss()
-test_epoch(net, testloader, criterion, device, 0)
+test_epoch(net, testloader, criterion, device, 0, save_best=False)

@@ -8,8 +8,44 @@ import sys
 import time
 import math
 
+from models import *
 import torch.nn as nn
 import torch.nn.init as init
+
+MODEL_NAMES = ["vgg", "resnet18", "preactresnet18", "googlenet", "densenet", "resnext", "mobilenet", "mobilenetv2", "dpn", "shufflenet", "senet18", "shufflenetv2", "efficientnet", "regnet", "dla"]
+
+def get_model(model_name):
+    if model_name == "vgg":
+        net = VGG('VGG11')
+    elif model_name == "resnet18":
+        net = ResNet18()
+    elif model_name == "preactresnet18":
+        net = PreActResNet18()
+    elif model_name == "googlenet":
+        net = GoogLeNet()
+    elif model_name == "densenet":
+        net = densenet_cifar()
+    elif model_name == "resnext":
+        net = ResNeXt29_2x64d()
+    elif model_name == "mobilenet":
+        net = MobileNet()
+    elif model_name == "mobilenetv2":
+        net = MobileNetV2()
+    elif model_name == "dpn":
+        net = DPN92()
+    elif model_name == "shufflenet":
+        net = ShuffleNetG2()
+    elif model_name == "senet18":
+        net = SENet18()
+    elif model_name == "shufflenetv2":
+        net = ShuffleNetV2(1)
+    elif model_name == "efficientnet":
+        net = EfficientNetB0()
+    elif model_name == "regnet":
+        net = RegNetX_200MF()
+    elif model_name == "dla":
+        net = SimpleDLA()
+    return net
 
 
 def get_mean_and_std(dataset):
@@ -122,3 +158,62 @@ def format_time(seconds):
     if f == '':
         f = '0ms'
     return f
+
+# Training
+def train_epoch(net, trainloader, optimizer, criterion, epoch, device):
+    print('\nEpoch: %d' % epoch)
+    net.train()
+    train_loss = 0
+    correct = 0
+    total = 0
+    for batch_idx, (inputs, targets) in enumerate(trainloader):
+        inputs, targets = inputs.to(device), targets.to(device)
+        optimizer.zero_grad()
+        outputs = net(inputs)
+        loss = criterion(outputs, targets)
+        loss.backward()
+        optimizer.step()
+
+        train_loss += loss.item()
+        _, predicted = outputs.max(1)
+        total += targets.size(0)
+        correct += predicted.eq(targets).sum().item()
+
+        progress_bar(batch_idx, len(trainloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
+                     % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
+
+
+def test_epoch(net, testloader, criterion, device, epoch, save_best=True):
+    global best_acc
+    net.eval()
+    test_loss = 0
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for batch_idx, (inputs, targets) in enumerate(testloader):
+            inputs, targets = inputs.to(device), targets.to(device)
+            outputs = net(inputs)
+            loss = criterion(outputs, targets)
+
+            test_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+
+            progress_bar(batch_idx, len(testloader), 'Loss: %.3f | Acc: %.3f%% (%d/%d)'
+                         % (test_loss/(batch_idx+1), 100.*correct/total, correct, total))
+
+    # Save checkpoint.
+    acc = 100.*correct/total
+    if acc > best_acc and save_best:
+        print('Saving..')
+        state = {
+            'net': net.state_dict(),
+            'acc': acc,
+            'epoch': epoch,
+        }
+        if not os.path.isdir('checkpoint'):
+            os.mkdir('checkpoint')
+        torch.save(state, f'./checkpoint/{net.__class__.__name__}.pth')
+        best_acc = acc
+

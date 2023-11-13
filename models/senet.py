@@ -66,7 +66,7 @@ class PreActBlock(nn.Module):
         out = self.conv2(F.relu(self.bn2(out)))
 
         # Squeeze
-        w = F.avg_pool2d(out, out.size(2))
+        w = F.avg_pool2d(out, int(out.size(2)))
         w = F.relu(self.fc1(w))
         w = F.sigmoid(self.fc2(w))
         # Excitation

@@ -61,6 +61,7 @@ if device == 'cuda':
     net = torch.nn.DataParallel(net)
     cudnn.benchmark = True
 
+best_acc = 0
 if args.resume:
     # Load checkpoint.
     print('==> Resuming from checkpoint..')
@@ -77,5 +78,5 @@ scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
 for epoch in range(start_epoch, start_epoch+200):
     train_epoch(net, trainloader, optimizer, criterion, epoch, device)
-    test_epoch(net, testloader, criterion, device, epoch, ckpt_name=args.net)
+    test_epoch(net, testloader, criterion, device, epoch, ckpt_name=args.net, best_acc=best_acc)
     scheduler.step()

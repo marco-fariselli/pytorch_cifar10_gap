@@ -183,10 +183,9 @@ def train_epoch(net, trainloader, optimizer, criterion, epoch, device):
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
 
-def test_epoch(net, testloader, criterion, device, epoch, save_best=True, ckpt_name=None):
+def test_epoch(net, testloader, criterion, device, epoch, save_best=True, best_acc=0, ckpt_name=None):
     if ckpt_name is None:
         ckpt_name = net.__class__.__name__
-    global best_acc
     net.eval()
     test_loss = 0
     correct = 0

@@ -183,8 +183,7 @@ def train_epoch(net, trainloader, optimizer, criterion, epoch, device):
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
 
-def test_epoch(net, testloader, criterion, device, epoch, save_best=True):
-    global best_acc
+def test_epoch(net, testloader, criterion, device, epoch, best_acc=0, save_best=True):
     net.eval()
     test_loss = 0
     correct = 0

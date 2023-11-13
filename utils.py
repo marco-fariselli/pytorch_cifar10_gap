@@ -183,7 +183,9 @@ def train_epoch(net, trainloader, optimizer, criterion, epoch, device):
                      % (train_loss/(batch_idx+1), 100.*correct/total, correct, total))
 
 
-def test_epoch(net, testloader, criterion, device, epoch, save_best=True):
+def test_epoch(net, testloader, criterion, device, epoch, save_best=True, ckpt_name=None):
+    if ckpt_name is None:
+        ckpt_name = net.__class__.__name__
     global best_acc
     net.eval()
     test_loss = 0
@@ -205,7 +207,7 @@ def test_epoch(net, testloader, criterion, device, epoch, save_best=True):
 
     # Save checkpoint.
     acc = 100.*correct/total
-    if acc > best_acc and save_best:
+    if save_best and acc > best_acc:
         print('Saving..')
         state = {
             'net': net.state_dict(),
@@ -214,6 +216,5 @@ def test_epoch(net, testloader, criterion, device, epoch, save_best=True):
         }
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
-        torch.save(state, f'./checkpoint/{net.__class__.__name__}.pth')
+        torch.save(state, f'./checkpoint/{ckpt_name}.pth')
         best_acc = acc
-

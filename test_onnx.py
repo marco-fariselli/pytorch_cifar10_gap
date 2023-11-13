@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10 Training')
 parser.add_argument('--onnx_path', default="checkpoint/mobilenet.onnx", type=str, help='onnx path')
 args = parser.parse_args()
 
+print(f"Testing model {args.onnx_path}")
 transform_test = transforms.Compose([
     transforms.Resize(32),
     transforms.ToTensor(),

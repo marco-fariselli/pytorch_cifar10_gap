@@ -83,6 +83,14 @@ class ShuffleNet(nn.Module):
         return out
 
 
+def ShuffleNetG1():
+    cfg = {
+        'out_planes': [200,400,800],
+        'num_blocks': [4,8,4],
+        'groups': 1
+    }
+    return ShuffleNet(cfg)
+
 def ShuffleNetG2():
     cfg = {
         'out_planes': [200,400,800],

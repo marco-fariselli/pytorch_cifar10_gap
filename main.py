@@ -76,7 +76,7 @@ optimizer = optim.SGD(net.parameters(), lr=args.lr,
                       momentum=0.9, weight_decay=5e-4)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
 
-for epoch in range(start_epoch, start_epoch+200):
+for epoch in range(start_epoch, start_epoch+20):
     train_epoch(net, trainloader, optimizer, criterion, epoch, device)
     test_epoch(net, testloader, criterion, device, epoch, ckpt_name=args.net, best_acc=best_acc)
     scheduler.step()

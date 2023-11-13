@@ -112,7 +112,7 @@ def RegNetX_200MF():
         'depths': [1, 1, 4, 7],
         'widths': [24, 56, 152, 368],
         'strides': [1, 1, 2, 2],
-        'group_width': 8,
+        'group_width': 1,
         'bottleneck_ratio': 1,
         'se_ratio': 0,
     }

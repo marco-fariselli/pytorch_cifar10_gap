@@ -34,7 +34,7 @@ def get_model(model_name):
     elif model_name == "dpn":
         net = DPN92()
     elif model_name == "shufflenet":
-        net = ShuffleNetG2()
+        net = ShuffleNetG1()
     elif model_name == "senet18":
         net = SENet18()
     elif model_name == "shufflenetv2":

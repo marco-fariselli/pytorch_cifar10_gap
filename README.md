@@ -15,21 +15,22 @@ python main.py
 python main.py --resume --lr=0.01
 ```
 
-## Accuracy
-| Model             | Acc.        |
-| ----------------- | ----------- |
-| [VGG16](https://arxiv.org/abs/1409.1556)              | 92.64%      |
-| [ResNet18](https://arxiv.org/abs/1512.03385)          | 93.02%      |
-| [ResNet50](https://arxiv.org/abs/1512.03385)          | 93.62%      |
-| [ResNet101](https://arxiv.org/abs/1512.03385)         | 93.75%      |
-| [RegNetX_200MF](https://arxiv.org/abs/2003.13678)     | 94.24%      |
-| [RegNetY_400MF](https://arxiv.org/abs/2003.13678)     | 94.29%      |
-| [MobileNetV2](https://arxiv.org/abs/1801.04381)       | 94.43%      |
-| [ResNeXt29(32x4d)](https://arxiv.org/abs/1611.05431)  | 94.73%      |
-| [ResNeXt29(2x64d)](https://arxiv.org/abs/1611.05431)  | 94.82%      |
-| [SimpleDLA](https://arxiv.org/abs/1707.064)           | 94.89%      |
-| [DenseNet121](https://arxiv.org/abs/1608.06993)       | 95.04%      |
-| [PreActResNet18](https://arxiv.org/abs/1603.05027)    | 95.11%      |
-| [DPN92](https://arxiv.org/abs/1707.01629)             | 95.16%      |
-| [DLA](https://arxiv.org/pdf/1707.06484.pdf)           | 95.47%      |
+## Accuracy after 20 epochs
+| Model                                                 | Acc.    | Acc. Small | Ops [M]   | Acc. Fp16 | Cycles fp16 [M]  | Latency fp16 (@370MHz) | MAC/Cyc fp16 | Acc. int8 | Cycles int8 [M]  | Latency int8 (@370MHz) | MAC/Cyc int8 | Acc. ne16 | Cycles ne16 [M]  | Latency ne16 (@370MHz) | MAC/Cyc ne16 |
+| ----------------------------------------------------- | ------- | ---------- | --------- | --------- | ---------------- | ---------------------- | ------------ | --------- | ---------------- | ---------------------- | ------------ | --------- | ---------------- | ---------------------- | ------------ |
+| [VGG16](https://arxiv.org/abs/1409.1556)              | 79.34%  |    80.90%  |  152.9    |           |                  |                        |              |    80.30% | 9.74             |                        | 15.69        |           |                  |                        |              |
+| [ResNet18](https://arxiv.org/abs/1512.03385)          | 82.66%  |    83.30%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| [PreActResNet18](https://arxiv.org/abs/1603.05027)    | 75.01%  |    75.20%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| [DenseNet](https://arxiv.org/abs/1608.06993)          | 83.75%  |    84.00%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| MobileNet                                             | 82.79%  |    82.20%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| [MobileNetV2](https://arxiv.org/abs/1801.04381)       | 78.00%  |    77.20%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| SeNet18                                               | 84.91%  |    85.00%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| ShuffleNetV2                                          | 79.16%  |    79.00%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| EfficientNet                                          | 77.33%  |    78.60%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| RegNet                                                | 69.09%  |    68.80%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
 
+<!-- 
+| ShuffleNet                                            | 77.64%  |    78.20%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| [ResNeXt29(2x64d)](https://arxiv.org/abs/1611.05431)  | 77.22%  |    78.20%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| GoogleNet                                             | 82.80%  |    84.50%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              |
+| DLA                                                   | 78.04%  |    78.00%  |           |           |                  |                        |              |           |                  |                        |              |           |                  |                        |              | -->
